@@ -1,0 +1,2 @@
+name,email,password
+TestUser,testuser+${random}@example.com,pass123
