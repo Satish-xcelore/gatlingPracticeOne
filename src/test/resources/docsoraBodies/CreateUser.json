@@ -1,5 +1,5 @@
 {
-  "fullName": "${name}",
+  "fullName": "Test User",
   "emailId": "${email}",
-  "password": "${password}"
+  "password": "Password@123"
 }

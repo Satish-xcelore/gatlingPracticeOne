@@ -12,13 +12,22 @@ class DocsoraLoginLoadSimulation extends Simulation {
     .header("Content-Type", "application/json")
     .proxy(Proxy("127.0.0.1", 8000))
 
+
+  val generateEmail = exec { session =>
+    val randomNum = scala.util.Random.nextInt(100000)
+    val email = s"user$randomNum@domain.com"
+    session.set("email", email)
+  }
+
   def createAUser: ChainBuilder = {
     repeat(1) {
-      exec(http("Create a new user")
-        .post("api/v1/user/create-user")
-        .body(RawFileBody("src/test/resources/docsoraBodies/CreateUser.json")).asJson
-        .check(status.in(200, 201, 204))
-      ).pause(2)
+      exec(generateEmail)
+        .exec(http("Create a new user")
+          .post("api/v1/user/create-user")
+          .body(ElFileBody("src/test/resources/docsoraBodies/CreateUser.json")).asJson
+          .check(status.in(200, 201, 204))
+        )
+        .pause(2)
     }
   }
 
